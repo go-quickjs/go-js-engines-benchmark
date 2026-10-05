@@ -1,13 +1,24 @@
 # Go JavaScript Engine Benchmarks
 
-Performance benchmarks for three JavaScript engines in Go.
+Performance benchmarks for four JavaScript engines in Go.
 
 ## Engines Tested
 
-- **[Goja](https://github.com/dop251/goja)**: Pure Go implementation of ECMAScript 5.1
+- **[Goja](https://github.com/dop251/goja)**: Pure Go JavaScript engine
 - **[ModerncQuickJS](https://gitlab.com/modernc.org/quickjs)**: QuickJS using [ccgo](https://pkg.go.dev/modernc.org/ccgo) (C-to-Go translator) with [mmap memory](https://pkg.go.dev/modernc.org/memory)
 - **[QJS](https://github.com/fastschema/qjs)**: QuickJS compiled to WebAssembly
+- **[GoQuickJS](https://github.com/go-quickjs/go-quickjs)**: Pure Go reimplementation of QuickJS-NG
 
+Both benchmark modules use the following engine versions:
+
+| Engine | Version |
+| --- | --- |
+| Goja | `v0.0.0-20261004200024-481fdb442bb4` |
+| ModerncQuickJS | `v0.25.0` |
+| QJS | `v0.0.6` |
+| GoQuickJS | `v0.21.1-0.20261005231136-9b660e93edba` |
+
+The results below are historical measurements from the earlier three-engine setup. They do not represent these updated versions or include GoQuickJS. Run both benchmarks to generate current four-engine comparisons.
 
 ## Factorial Benchmark Results
 
@@ -69,14 +80,17 @@ Memory usage cannot be compared fairly between these engines. Here's why:
 | Engine | Memory Type | Visible to Go |
 |--------|-------------|---------------|
 | Goja | Go heap and stack | Yes |
+| GoQuickJS | Go heap and stack | Yes |
 | QJS | WASM linear memory | No |
 | ModerncQuickJS | mmap allocations | No |
 
-Goja uses normal Go memory that shows up in `runtime.MemStats`. The other two use memory that Go cannot see. This makes memory comparisons meaningless.
+Goja and GoQuickJS use normal Go memory that shows up in `runtime.MemStats`. QJS and ModerncQuickJS use memory that Go cannot see. This makes comparisons based on Go memory statistics misleading.
 
-Only execution time can be compared fairly across all three engines.
+Only execution time is compared across all four engines.
 
 ## How to Run
+
+Requires Go 1.26 or newer, as required by ModerncQuickJS `v0.25.0`.
 
 Clone the repository:
 
@@ -113,6 +127,10 @@ go run .
 ```
 
 Written entirely in Go. Memory is managed by Go's garbage collector.
+
+### GoQuickJS
+
+Reimplements QuickJS-NG in pure Go. Memory is managed by Go's garbage collector, and it needs neither cgo nor WebAssembly. Both benchmarks create its runtime before measuring execution time.
 
 ### ModerncQuickJS
 ```
@@ -173,5 +191,6 @@ To add a benchmark:
 
 Provided as-is for testing purposes. Engine licenses:
 - Goja: MIT
+- GoQuickJS: MIT
 - QJS: MIT
 - ModerncQuickJS: BSD-3-Clause
