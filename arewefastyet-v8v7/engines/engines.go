@@ -14,5 +14,6 @@ func Engines() []JSEngine {
 		&ModerncQuickJS{},
 		&QJS{},
 		&GoQuickJS{},
+		&Paserati{},
 	}
 }

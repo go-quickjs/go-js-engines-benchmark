@@ -1,6 +1,6 @@
 # Go JavaScript Engine Benchmarks
 
-Performance benchmarks for four JavaScript engines in Go.
+Performance benchmarks for five JavaScript engines in Go.
 
 ## Engines Tested
 
@@ -8,6 +8,7 @@ Performance benchmarks for four JavaScript engines in Go.
 - **[ModerncQuickJS](https://gitlab.com/modernc.org/quickjs)**: QuickJS using [ccgo](https://pkg.go.dev/modernc.org/ccgo) (C-to-Go translator) with [mmap memory](https://pkg.go.dev/modernc.org/memory)
 - **[QJS](https://github.com/fastschema/qjs)**: QuickJS compiled to WebAssembly
 - **[GoQuickJS](https://github.com/go-quickjs/go-quickjs)**: Pure Go reimplementation of QuickJS-NG
+- **[Paserati](https://github.com/nooga/paserati)**: Pure Go TypeScript/JavaScript runtime with a bytecode VM; benchmarks run with type checking disabled
 
 Both benchmark modules use the following engine versions:
 
@@ -17,8 +18,9 @@ Both benchmark modules use the following engine versions:
 | ModerncQuickJS | `v0.25.0` |
 | QJS | `v0.0.6` |
 | GoQuickJS | `v0.21.1-0.20261005231136-9b660e93edba` |
+| Paserati | `v0.9.13` |
 
-The results below are historical measurements from the earlier three-engine setup. They do not represent these updated versions or include GoQuickJS. Run both benchmarks to generate current four-engine comparisons.
+The results below are historical measurements from the earlier three-engine setup. They do not represent these updated versions or include GoQuickJS or Paserati. Run both benchmarks to generate current five-engine comparisons.
 
 ## Factorial Benchmark Results
 
@@ -81,12 +83,13 @@ Memory usage cannot be compared fairly between these engines. Here's why:
 |--------|-------------|---------------|
 | Goja | Go heap and stack | Yes |
 | GoQuickJS | Go heap and stack | Yes |
+| Paserati | Go heap and stack | Yes |
 | QJS | WASM linear memory | No |
 | ModerncQuickJS | mmap allocations | No |
 
-Goja and GoQuickJS use normal Go memory that shows up in `runtime.MemStats`. QJS and ModerncQuickJS use memory that Go cannot see. This makes comparisons based on Go memory statistics misleading.
+Goja, GoQuickJS, and Paserati use normal Go memory that shows up in `runtime.MemStats`. QJS and ModerncQuickJS use memory that Go cannot see. This makes comparisons based on Go memory statistics misleading.
 
-Only execution time is compared across all four engines.
+Only execution time is compared across all five engines.
 
 ## How to Run
 
@@ -131,6 +134,10 @@ Written entirely in Go. Memory is managed by Go's garbage collector.
 ### GoQuickJS
 
 Reimplements QuickJS-NG in pure Go. Memory is managed by Go's garbage collector, and it needs neither cgo nor WebAssembly. Both benchmarks create its runtime before measuring execution time.
+
+### Paserati
+
+Parses JavaScript/TypeScript and compiles it to bytecode for a register VM, implemented in pure Go. The benchmarks disable TypeScript type checking and create the runtime before measuring execution time. The V8 suite's `load` function compiles scripts in a shared global context. This integration adapts [PR #1](https://github.com/ngocphuongnb/go-js-engines-benchmark/pull/1) to the current Paserati release.
 
 ### ModerncQuickJS
 ```
@@ -192,5 +199,6 @@ To add a benchmark:
 Provided as-is for testing purposes. Engine licenses:
 - Goja: MIT
 - GoQuickJS: MIT
+- Paserati: MIT
 - QJS: MIT
 - ModerncQuickJS: BSD-3-Clause
