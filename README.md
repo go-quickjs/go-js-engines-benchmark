@@ -14,26 +14,26 @@ Both benchmark modules use the following engine versions:
 
 | Engine | Version |
 | --- | --- |
-| Goja | `v0.0.0-20261004200024-481fdb442bb4` |
+| Goja | `v0.0.0-20261007200356-e2ea74d3d210` |
 | ModerncQuickJS | `v0.25.0` |
 | QJS | `v0.0.6` |
-| GoQuickJS | `v0.21.1-0.20261005231136-9b660e93edba` |
+| GoQuickJS | `v0.24.3` |
 | Paserati | `v0.9.13` |
 
-Results collected on October 5, 2026 using the engine versions listed above. The factorial benchmark averages five runs per engine; V8v7 reports one full suite run per engine. Results vary with system load and hardware.
+Results collected on October 8, 2026 using the engine versions listed above. The factorial benchmark averages five runs per engine; V8v7 reports one full suite run per engine. Results vary with system load and hardware.
 
 ## Factorial Benchmark Results
 
 | Iteration | GOJA | ModerncQuickJS | QJS | GoQuickJS | Paserati |
 | --- | --- | --- | --- | --- | --- |
-| 1 | 695.428ms | 658.038ms | 576.685ms | 206.547ms | 519.791ms |
-| 2 | 688.229ms | 644.812ms | 603.838ms | 217.724ms | 521.393ms |
-| 3 | 713.952ms | 646.720ms | 600.329ms | 210.486ms | 507.021ms |
-| 4 | 710.495ms | 659.025ms | 593.381ms | 225.509ms | 518.671ms |
-| 5 | 709.531ms | 656.934ms | 585.931ms | 206.696ms | 512.245ms |
-| Average | 703.527ms | 653.106ms | 592.033ms | **213.392ms** | 515.824ms |
-| Total | 3.518s | 3.266s | 2.960s | **1.067s** | 2.579s |
-| Relative Time (lower is better) | 3.30x | 3.06x | 2.77x | 1.00x | 2.42x |
+| 1 | 757.357ms | 699.730ms | 616.800ms | 215.146ms | 532.040ms |
+| 2 | 725.276ms | 706.937ms | 615.922ms | 214.989ms | 530.160ms |
+| 3 | 740.876ms | 695.378ms | 617.475ms | 227.441ms | 531.224ms |
+| 4 | 750.306ms | 698.285ms | 627.344ms | 215.264ms | 538.193ms |
+| 5 | 727.457ms | 694.401ms | 617.112ms | 215.013ms | 534.047ms |
+| Average | 740.254ms | 698.946ms | 618.930ms | **217.571ms** | 533.133ms |
+| Total | 3.701s | 3.495s | 3.095s | **1.088s** | 2.666s |
+| Relative Time (lower is better) | 3.40x | 3.21x | 2.84x | 1.00x | 2.45x |
 
 *Benchmarks run on Apple M5 Max, 128 GiB RAM, macOS ARM64, Go 1.27.0.*
 
@@ -43,16 +43,16 @@ Higher scores are better; lower duration is better.
 
 | Metric | GOJA | ModerncQuickJS | QJS | GoQuickJS | Paserati |
 | --- | --- | --- | --- | --- | --- |
-| Richards | 503 | 484 | 563 | **1774** | 492 |
-| DeltaBlue | 596 | 512 | 622 | **2246** | 649 |
-| Crypto | 330 | 416 | 448 | **2902** | 649 |
-| RayTrace | 820 | 1062 | 994 | **4525** | 1187 |
-| EarleyBoyer | 1459 | 1304 | 1496 | **5557** | 2020 |
-| RegExp | 605 | 351 | 255 | **4321** | 1125 |
-| Splay | 2605 | 2760 | 2635 | **8231** | 3602 |
-| NavierStokes | 545 | 1067 | 719 | **5311** | 1273 |
-| Score (version 7) | 751 | 787 | 761 | **3912** | 1125 |
-| Duration (seconds) | 51.188s | 48.447s | 52.086s | **22.380s** | 36.567s |
+| Richards | 485 | 471 | 565 | **1959** | 473 |
+| DeltaBlue | 592 | 495 | 608 | **2371** | 614 |
+| Crypto | 319 | 413 | 442 | **2956** | 623 |
+| RayTrace | 739 | 1033 | 974 | **4826** | 1080 |
+| EarleyBoyer | 1315 | 1244 | 1467 | **5486** | 1924 |
+| RegExp | 547 | 332 | 248 | **3965** | 1055 |
+| Splay | 2327 | 2608 | 2481 | **7644** | 3366 |
+| NavierStokes | 531 | 1028 | 700 | **6078** | 1214 |
+| Score (version 7) | 704 | 759 | 743 | **4011** | 1062 |
+| Duration (seconds) | 53.940s | 50.370s | 53.124s | **22.350s** | 38.207s |
 
 *Benchmarks run on Apple M5 Max, 128 GiB RAM, macOS ARM64, Go 1.27.0.*
 
