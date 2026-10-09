@@ -1,10 +1,18 @@
 package engines
 
-import "testing"
+import (
+	"os/exec"
+	"testing"
+)
 
 func TestEngines(t *testing.T) {
 	for _, engine := range Engines() {
 		t.Run(engine.Name(), func(t *testing.T) {
+			if _, isNode := engine.(*Node); isNode {
+				if _, err := exec.LookPath("node"); err != nil {
+					t.Skip("Node.js is not installed")
+				}
+			}
 			if err := engine.Init(); err != nil {
 				t.Fatal(err)
 			}
@@ -36,5 +44,16 @@ func TestEngines(t *testing.T) {
 				t.Fatal(err)
 			}
 		})
+	}
+}
+
+func TestNodeMissingExecutable(t *testing.T) {
+	t.Setenv("PATH", t.TempDir())
+	engine := &Node{}
+	if err := engine.Init(); err == nil {
+		t.Fatal("expected error when Node.js is not installed")
+	}
+	if err := engine.Close(); err != nil {
+		t.Fatal(err)
 	}
 }

@@ -23,9 +23,11 @@ func createMetrics() []EngineMetrics {
 	engs := engines.Engines()
 	metrics := make([]EngineMetrics, len(engs))
 	for i, engine := range engs {
+		_, reference := engine.(*engines.Node)
 		metrics[i] = EngineMetrics{
-			Name:    engine.Name(),
-			Results: make([]BenchmarkResult, iterations),
+			Name:      engine.Name(),
+			Reference: reference,
+			Results:   make([]BenchmarkResult, iterations),
 		}
 	}
 
@@ -44,6 +46,7 @@ func main() {
 	fmt.Println("  - Paserati uses Go memory (visible)")
 	fmt.Println("  - QJS uses WASM memory (invisible to Go)")
 	fmt.Println("  - ModerncQuickJS uses mmap memory (invisible to Go)")
+	fmt.Println("  - Node and NodeJitless use V8 memory in separate processes")
 
 	engs := engines.Engines()
 	metrics := createMetrics()

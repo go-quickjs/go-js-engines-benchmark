@@ -2,6 +2,7 @@ package engines
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"testing"
@@ -13,6 +14,17 @@ func TestGoQuickJSRun(t *testing.T) {
 
 func TestPaseratiRun(t *testing.T) {
 	testScriptEngine(t, &Paserati{})
+}
+
+func TestNodeRun(t *testing.T) {
+	if _, err := exec.LookPath("node"); err != nil {
+		t.Skip("Node.js is not installed")
+	}
+	for _, engine := range []*Node{{}, {Jitless: true}} {
+		t.Run(engine.Name(), func(t *testing.T) {
+			testScriptEngine(t, engine)
+		})
+	}
 }
 
 func testScriptEngine(t *testing.T, engine JSEngine) {

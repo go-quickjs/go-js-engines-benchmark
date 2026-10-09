@@ -15,5 +15,7 @@ func Engines() []JSEngine {
 		&QJS{},
 		&GoQuickJS{},
 		&Paserati{},
+		&Node{},
+		&Node{Jitless: true},
 	}
 }

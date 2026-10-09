@@ -22,14 +22,32 @@ type BenchmarkResult struct {
 }
 
 type EngineMetrics struct {
-	Name    string
-	Results []BenchmarkResult
-	Total   BenchmarkResult
-	Average BenchmarkResult
+	Name      string
+	Reference bool
+	Results   []BenchmarkResult
+	Total     BenchmarkResult
+	Average   BenchmarkResult
 }
 
 func printResultsTable(metrics []EngineMetrics, iterations int) {
-	fmt.Println("\n## Results")
+	var primary, reference []EngineMetrics
+	for _, metric := range metrics {
+		if metric.Reference {
+			reference = append(reference, metric)
+		} else {
+			primary = append(primary, metric)
+		}
+	}
+	fmt.Println("\n## Go-Hosted Engine Results")
+	printMetricsTable(primary, iterations)
+	fmt.Println("\n## Node.js Reference Results")
+	printMetricsTable(reference, iterations)
+}
+
+func printMetricsTable(metrics []EngineMetrics, iterations int) {
+	if len(metrics) == 0 {
+		return
+	}
 	t := table.NewWriter()
 	header := table.Row{"Iteration"}
 	for _, m := range metrics {

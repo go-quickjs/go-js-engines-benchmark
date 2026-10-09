@@ -16,9 +16,10 @@ type V8V7TestScore struct {
 }
 
 type EngineScore struct {
-	Engine   string
-	Duration time.Duration
-	Scores   []V8V7TestScore
+	Engine    string
+	Reference bool
+	Duration  time.Duration
+	Scores    []V8V7TestScore
 }
 
 func benchmarkEngine(engine engines.JSEngine) EngineScore {
@@ -44,13 +45,25 @@ func main() {
 			fmt.Printf("Running engine: %s\n", eng.Name())
 			must(0, eng.Init())
 			score := benchmarkEngine(eng)
+			_, score.Reference = eng.(*engines.Node)
 			allScores = append(allScores, score)
 			eng.Close()
 			fmt.Println()
 		}(eng)
 	}
 
-	generateMarkdownTable(allScores)
+	var primary, reference []EngineScore
+	for _, score := range allScores {
+		if score.Reference {
+			reference = append(reference, score)
+		} else {
+			primary = append(primary, score)
+		}
+	}
+	fmt.Println("## Go-Hosted Engine Results")
+	generateMarkdownTable(primary)
+	fmt.Println("\n## Node.js Reference Results")
+	generateMarkdownTable(reference)
 }
 
 func generateMarkdownTable(scores []EngineScore) {
