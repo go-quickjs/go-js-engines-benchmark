@@ -44,6 +44,7 @@ func main() {
 	fmt.Println("  - Goja uses Go memory (visible)")
 	fmt.Println("  - GoQuickJS uses Go memory (visible)")
 	fmt.Println("  - Paserati uses Go memory (visible)")
+	fmt.Println("  - MoeJS uses Go memory (visible)")
 	fmt.Println("  - QJS uses WASM memory (invisible to Go)")
 	fmt.Println("  - ModerncQuickJS uses mmap memory (invisible to Go)")
 	fmt.Println("  - Node and NodeJitless use V8 memory in separate processes")

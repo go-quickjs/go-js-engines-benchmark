@@ -16,6 +16,10 @@ func TestPaseratiRun(t *testing.T) {
 	testScriptEngine(t, &Paserati{})
 }
 
+func TestMoeJSRun(t *testing.T) {
+	testScriptEngine(t, &MoeJS{})
+}
+
 func TestNodeRun(t *testing.T) {
 	if _, err := exec.LookPath("node"); err != nil {
 		t.Skip("Node.js is not installed")

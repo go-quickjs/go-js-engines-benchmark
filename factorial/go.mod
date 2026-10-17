@@ -3,9 +3,10 @@ module factorial
 go 1.26.0
 
 require (
+	github.com/Calcium-Ion/moejs v0.1.0-alpha.6
 	github.com/dop251/goja v0.0.0-20261007200356-e2ea74d3d210
 	github.com/fastschema/qjs v0.0.6
-	github.com/go-quickjs/go-quickjs v0.24.3
+	github.com/go-quickjs/go-quickjs v0.27.0
 	github.com/jedib0t/go-pretty/v6 v6.6.8
 	github.com/nooga/paserati v0.9.13
 	modernc.org/quickjs v0.25.0
@@ -16,7 +17,7 @@ require (
 	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/dlclark/regexp2/v2 v2.8.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/go-quickjs/go-intl v0.5.0 // indirect
+	github.com/go-quickjs/go-intl v0.6.0 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
 	github.com/google/pprof v0.0.0-20251007162407-5df77e3f7d1d // indirect
 	github.com/google/uuid v1.6.0 // indirect
