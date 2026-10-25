@@ -17,49 +17,49 @@ Both benchmark modules use the following engine versions:
 
 | Engine | Version |
 | --- | --- |
-| Goja | `v0.0.0-20261007200356-e2ea74d3d210` |
+| Goja | `v0.0.0-20261024144015-2a9269b6b6de` |
 | ModerncQuickJS | `v0.25.0` |
 | QJS | `v0.0.6` |
-| GoQuickJS | `v0.27.0` |
+| GoQuickJS | `v0.29.0` |
 | Paserati | `v0.9.13` |
 | MoeJS | `v0.1.0-alpha.6` |
 | Node / NodeJitless | `v26.8.1` |
 
-Results collected on October 16, 2026 using the engine versions listed above. The factorial benchmark averages five runs per engine; V8v7 reports one full suite run per engine. Results vary with system load and hardware.
+Results collected on October 25, 2026 using the engine versions listed above. The factorial benchmark averages five runs per engine; V8v7 reports one full suite run per engine. Results vary with system load and hardware. This run uses Go 1.27.3; the previous October 16 run used Go 1.27.0, so differences between those runs cannot be attributed solely to engine updates.
 
 Node reference results are presented separately and excluded from the Go-hosted engine rankings and relative times. Goja, GoQuickJS, Paserati, and MoeJS are pure-Go engines; ModerncQuickJS, QJS, and Node use different runtime architectures. Node provides a heavily optimized, JIT-enabled runtime reference, while NodeJitless provides an interpreter reference.
 
 The factorial workload discards its return values. An optimizing engine can eliminate redundant work, so these timings measure optimization as well as execution.
 
-GoQuickJS v0.27.0 has the highest V8v7 score among the six Go-hosted engines in this run: 4257, compared with 1767 for MoeJS, 1077 for Paserati, and 725 for Goja. MoeJS has the lowest factorial average at 217.442ms, followed closely by GoQuickJS at 220.546ms (about 1.4% more time). The small factorial gap should be read in light of run-to-run variation. These workloads measure different aspects of execution and do not establish a ranking for every application.
+GoQuickJS v0.29.0 has the highest V8v7 score among the six Go-hosted engines in this run: 4379, compared with 1720 for MoeJS, 1046 for Paserati, and 722 for Goja. GoQuickJS and MoeJS have nearly identical factorial averages at 217.311ms and 217.401ms, respectively; the difference is less than 0.1% and should be read in light of run-to-run variation. These workloads measure different aspects of execution and do not establish a ranking for every application.
 
 ## Factorial Benchmark Results
 
 | Iteration | GOJA | ModerncQuickJS | QJS | GoQuickJS | Paserati | MoeJS |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 726.823ms | 689.747ms | 604.245ms | 208.063ms | 537.690ms | 221.727ms |
-| 2 | 722.220ms | 694.812ms | 617.076ms | 215.207ms | 535.019ms | 221.158ms |
-| 3 | 732.469ms | 692.784ms | 616.240ms | 244.844ms | 549.086ms | 207.329ms |
-| 4 | 723.920ms | 701.936ms | 623.265ms | 212.263ms | 528.038ms | 223.355ms |
-| 5 | 742.624ms | 681.168ms | 619.002ms | 222.353ms | 536.816ms | 213.639ms |
-| Average | 729.611ms | 692.089ms | 615.965ms | 220.546ms | 537.330ms | **217.442ms** |
-| Total | 3.648s | 3.460s | 3.080s | 1.103s | 2.687s | **1.087s** |
-| Relative Time (lower is better) | 3.36x | 3.18x | 2.83x | 1.01x | 2.47x | 1.00x |
+| 1 | 717.626ms | 674.612ms | 632.688ms | 214.237ms | 533.056ms | 208.598ms |
+| 2 | 722.347ms | 689.109ms | 611.138ms | 217.819ms | 539.622ms | 218.493ms |
+| 3 | 742.273ms | 677.979ms | 622.914ms | 223.828ms | 538.164ms | 214.182ms |
+| 4 | 710.065ms | 692.521ms | 609.894ms | 216.056ms | 525.546ms | 233.010ms |
+| 5 | 738.422ms | 719.459ms | 608.984ms | 214.613ms | 524.415ms | 212.724ms |
+| Average | 726.147ms | 690.736ms | 617.124ms | **217.311ms** | 532.161ms | 217.401ms |
+| Total | 3.631s | 3.454s | 3.086s | **1.087s** | 2.661s | 1.087s |
+| Relative Time (lower is better) | 3.34x | 3.18x | 2.84x | 1.00x | 2.45x | 1.00x |
 
-*Benchmarks run on Apple M5 Max, 128 GiB RAM, macOS ARM64, Go 1.27.0.*
+*Benchmarks run on Apple M5 Max, 128 GiB RAM, macOS ARM64, Go 1.27.3.*
 
 ### Node.js Reference Results
 
 | Iteration | Node | NodeJitless |
 | --- | --- | --- |
-| 1 | 21.143ms | 164.316ms |
-| 2 | 21.244ms | 172.361ms |
-| 3 | 21.241ms | 162.373ms |
-| 4 | 21.780ms | 160.557ms |
-| 5 | 19.691ms | 165.884ms |
-| Average | **21.020ms** | 165.098ms |
-| Total | **105.102ms** | 825.493ms |
-| Relative Time (lower is better) | 1.00x | 7.85x |
+| 1 | 21.740ms | 163.929ms |
+| 2 | 20.810ms | 163.617ms |
+| 3 | 21.491ms | 159.917ms |
+| 4 | 21.125ms | 164.387ms |
+| 5 | 20.852ms | 161.793ms |
+| Average | **21.203ms** | 162.729ms |
+| Total | **106.019ms** | 813.645ms |
+| Relative Time (lower is better) | 1.00x | 7.67x |
 
 *Node v26.8.1, using the same hardware and OS as above. Reference rankings compare only the two Node configurations.*
 
@@ -69,33 +69,33 @@ Higher scores are better; lower duration is better.
 
 | Metric | GOJA | ModerncQuickJS | QJS | GoQuickJS | Paserati | MoeJS |
 | --- | --- | --- | --- | --- | --- | --- |
-| Richards | 506 | 470 | 549 | **2053** | 475 | 795 |
-| DeltaBlue | 615 | 493 | 609 | **2600** | 607 | 1144 |
-| Crypto | 329 | 408 | 443 | **2881** | 618 | 1454 |
-| RayTrace | 748 | 1037 | 976 | **5681** | 1142 | 1944 |
-| EarleyBoyer | 1393 | 1242 | 1442 | **6211** | 1923 | 2965 |
-| RegExp | 579 | 313 | 256 | **4019** | 1088 | 1035 |
-| Splay | 2304 | 2640 | 2456 | **8687** | 3463 | 4824 |
-| NavierStokes | 535 | 1026 | 704 | **5696** | 1225 | 2498 |
-| Score (version 7) | 725 | 753 | 742 | **4257** | 1077 | 1767 |
-| Duration (seconds) | 53.497s | 50.939s | 52.380s | **22.321s** | 37.321s | 29.747s |
+| Richards | 484 | 477 | 569 | **2115** | 463 | 774 |
+| DeltaBlue | 591 | 492 | 625 | **2510** | 588 | 1129 |
+| Crypto | 325 | 415 | 448 | **2943** | 615 | 1430 |
+| RayTrace | 781 | 1040 | 957 | **5517** | 1037 | 1923 |
+| EarleyBoyer | 1360 | 1278 | 1483 | **6486** | 1878 | 2905 |
+| RegExp | 581 | 340 | 254 | **4743** | 1078 | 1028 |
+| Splay | 2420 | 2703 | 2456 | **8858** | 3390 | 4376 |
+| NavierStokes | 534 | 1027 | 697 | **5759** | 1199 | 2435 |
+| Score (version 7) | 722 | 769 | 748 | **4379** | 1046 | 1720 |
+| Duration (seconds) | 52.451s | 49.612s | 52.669s | **22.314s** | 38.458s | 29.893s |
 
-*Benchmarks run on Apple M5 Max, 128 GiB RAM, macOS ARM64, Go 1.27.0.*
+*Benchmarks run on Apple M5 Max, 128 GiB RAM, macOS ARM64, Go 1.27.3.*
 
 ### Node.js Reference Results
 
 | Metric | Node | NodeJitless |
 | --- | --- | --- |
-| Richards | **77703** | 2800 |
-| DeltaBlue | **207690** | 3061 |
-| Crypto | **97809** | 2786 |
-| RayTrace | **226585** | 8965 |
-| EarleyBoyer | **177814** | 13330 |
-| RegExp | **23251** | 6571 |
-| Splay | **88043** | 15247 |
-| NavierStokes | **78277** | 4211 |
-| Score (version 7) | **100237** | 5756 |
-| Duration (seconds) | **20.046s** | 22.236s |
+| Richards | **80979** | 2754 |
+| DeltaBlue | **216722** | 3101 |
+| Crypto | **97203** | 2786 |
+| RayTrace | **228065** | 8844 |
+| EarleyBoyer | **176202** | 13167 |
+| RegExp | **23887** | 6513 |
+| Splay | **41991** | 14652 |
+| NavierStokes | **79166** | 4188 |
+| Score (version 7) | **92680** | 5695 |
+| Duration (seconds) | **20.055s** | 22.191s |
 
 *Node v26.8.1, using the same hardware and OS as above. Reference rankings compare only the two Node configurations.*
 
