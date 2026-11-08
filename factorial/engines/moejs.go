@@ -1,6 +1,6 @@
 package engines
 
-import "github.com/Calcium-Ion/moejs"
+import "github.com/MoeForge/moejs"
 
 type MoeJS struct {
 	rt *moejs.Runtime

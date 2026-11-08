@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Calcium-Ion/moejs"
+	"github.com/MoeForge/moejs"
 )
 
 type MoeJS struct {

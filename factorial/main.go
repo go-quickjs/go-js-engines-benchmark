@@ -43,6 +43,7 @@ func main() {
 	fmt.Println("Memory is not measured because:")
 	fmt.Println("  - Goja uses Go memory (visible)")
 	fmt.Println("  - GoQuickJS uses Go memory (visible)")
+	fmt.Println("  - GoQuickJSJIT also uses executable memory outside the Go heap")
 	fmt.Println("  - Paserati uses Go memory (visible)")
 	fmt.Println("  - MoeJS uses Go memory (visible)")
 	fmt.Println("  - QJS uses WASM memory (invisible to Go)")

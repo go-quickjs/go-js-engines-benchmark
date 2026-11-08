@@ -8,16 +8,27 @@ import (
 )
 
 type GoQuickJS struct {
+	JIT    bool
 	rt     *quickjs.Runtime
 	output [][]string
 }
 
 func (q *GoQuickJS) Name() string {
+	if q.JIT {
+		return "GoQuickJSJIT"
+	}
 	return "GoQuickJS"
 }
 
 func (q *GoQuickJS) Init() error {
-	q.rt = quickjs.New()
+	var opts []quickjs.Option
+	if q.JIT {
+		if !goQuickJSJITSupported {
+			return fmt.Errorf("GoQuickJSJIT requires -tags quickjs_jit on linux/amd64, windows/amd64, or darwin/arm64")
+		}
+		opts = append(opts, quickjs.WithJIT(), quickjs.WithJITMemoryLimit(32*1024*1024))
+	}
+	q.rt = quickjs.New(opts...)
 	q.output = nil
 	if err := q.rt.Set("load", func(input string) error {
 		content, err := os.ReadFile("v8-v7/" + input)

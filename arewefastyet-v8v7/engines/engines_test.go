@@ -12,6 +12,17 @@ func TestGoQuickJSRun(t *testing.T) {
 	testScriptEngine(t, &GoQuickJS{})
 }
 
+func TestGoQuickJSJITRun(t *testing.T) {
+	if !goQuickJSJITSupported {
+		engine := &GoQuickJS{JIT: true}
+		if err := engine.Init(); err == nil {
+			t.Fatal("expected an error for an unsupported JIT build")
+		}
+		return
+	}
+	testScriptEngine(t, &GoQuickJS{JIT: true})
+}
+
 func TestPaseratiRun(t *testing.T) {
 	testScriptEngine(t, &Paserati{})
 }
@@ -39,7 +50,7 @@ func testScriptEngine(t *testing.T, engine JSEngine) {
 	}
 	scripts := map[string]string{
 		"loaded.js":    `function factorial(n) { return n <= 1 ? 1 : n * factorial(n - 1); }`,
-		"entry.js":     `load("loaded.js"); print("Factorial: " + factorial(10)); print("values", 42, true);`,
+		"entry.js":     `load("loaded.js"); for (var i = 0; i < 1000; i++) { if (factorial(10) !== 3628800) throw new Error("incorrect factorial"); } print("Factorial: " + factorial(10)); print("values", 42, true);`,
 		"error.js":     `throw new Error("expected failure");`,
 		"syntax.js":    `function (`,
 		"missing.js":   `load("does-not-exist.js");`,

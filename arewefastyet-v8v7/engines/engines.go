@@ -9,14 +9,19 @@ type JSEngine interface {
 }
 
 func Engines() []JSEngine {
-	return []JSEngine{
+	engines := []JSEngine{
 		&GOJA{},
 		&ModerncQuickJS{},
 		&QJS{},
 		&GoQuickJS{},
+	}
+	if goQuickJSJITSupported {
+		engines = append(engines, &GoQuickJS{JIT: true})
+	}
+	return append(engines,
 		&Paserati{},
 		&MoeJS{},
 		&Node{},
 		&Node{Jitless: true},
-	}
+	)
 }

@@ -25,7 +25,7 @@ func TestEngines(t *testing.T) {
 				function factorial(n) {
 					return n <= 1 ? 1 : n * factorial(n - 1);
 				}
-				for (var i = 0; i < 100; i++) {
+				for (var i = 0; i < 1000; i++) {
 					if (factorial(10) !== 3628800) throw new Error("incorrect factorial");
 				}
 			`); err != nil {
@@ -44,6 +44,16 @@ func TestEngines(t *testing.T) {
 				t.Fatal(err)
 			}
 		})
+	}
+}
+
+func TestGoQuickJSJITUnsupported(t *testing.T) {
+	if goQuickJSJITSupported {
+		t.Skip("JIT is covered by TestEngines in this build")
+	}
+	engine := &GoQuickJS{JIT: true}
+	if err := engine.Init(); err == nil {
+		t.Fatal("expected an error for an unsupported JIT build")
 	}
 }
 

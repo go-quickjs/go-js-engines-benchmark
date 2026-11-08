@@ -1,17 +1,32 @@
 package engines
 
-import "github.com/go-quickjs/go-quickjs"
+import (
+	"fmt"
+
+	"github.com/go-quickjs/go-quickjs"
+)
 
 type GoQuickJS struct {
-	rt *quickjs.Runtime
+	JIT bool
+	rt  *quickjs.Runtime
 }
 
 func (q *GoQuickJS) Name() string {
+	if q.JIT {
+		return "GoQuickJSJIT"
+	}
 	return "GoQuickJS"
 }
 
 func (q *GoQuickJS) Init() error {
-	q.rt = quickjs.New()
+	var opts []quickjs.Option
+	if q.JIT {
+		if !goQuickJSJITSupported {
+			return fmt.Errorf("GoQuickJSJIT requires -tags quickjs_jit on linux/amd64, windows/amd64, or darwin/arm64")
+		}
+		opts = append(opts, quickjs.WithJIT(), quickjs.WithJITMemoryLimit(32*1024*1024))
+	}
+	q.rt = quickjs.New(opts...)
 	return nil
 }
 
