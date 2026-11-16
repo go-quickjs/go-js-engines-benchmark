@@ -4,9 +4,9 @@ go 1.27.1
 
 require (
 	github.com/MoeForge/moejs v0.1.0
-	github.com/dop251/goja v0.0.0-20261108153707-d8dfb4d8b999
+	github.com/dop251/goja v0.0.0-20261110204830-f493a2b600d6
 	github.com/fastschema/qjs v0.0.6
-	github.com/go-quickjs/go-quickjs v0.37.3
+	github.com/go-quickjs/go-quickjs v0.38.0
 	github.com/jedib0t/go-pretty/v6 v6.6.8
 	github.com/nooga/paserati v0.10.1
 	modernc.org/quickjs v0.27.0
