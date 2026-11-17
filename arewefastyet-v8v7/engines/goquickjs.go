@@ -24,7 +24,7 @@ func (q *GoQuickJS) Init() error {
 	var opts []quickjs.Option
 	if q.JIT {
 		if !goQuickJSJITSupported {
-			return fmt.Errorf("GoQuickJSJIT requires -tags quickjs_jit on linux/amd64, windows/amd64, or darwin/arm64")
+			return fmt.Errorf("GoQuickJSJIT requires -tags quickjs_jit on linux/amd64, linux/arm64, windows/amd64, or darwin/arm64")
 		}
 		opts = append(opts, quickjs.WithJIT(), quickjs.WithJITMemoryLimit(32*1024*1024))
 	}
