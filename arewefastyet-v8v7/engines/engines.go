@@ -21,6 +21,7 @@ func Engines() []JSEngine {
 	return append(engines,
 		&Paserati{},
 		&MoeJS{},
+		&Ekuma{},
 		&Node{},
 		&Node{Jitless: true},
 	)

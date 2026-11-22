@@ -1,6 +1,6 @@
 # Go JavaScript Engine Benchmarks
 
-Performance benchmarks for six Go-hosted JavaScript engines, including GoQuickJS with and without JIT, with normal and JITless Node.js runs as separate references.
+Performance benchmarks for seven Go-hosted JavaScript engines, including GoQuickJS with and without JIT, with normal and JITless Node.js runs as separate references.
 
 ## Engines Tested
 
@@ -11,6 +11,7 @@ Performance benchmarks for six Go-hosted JavaScript engines, including GoQuickJS
 - **GoQuickJS JIT**: The same engine with its experimental native JIT enabled (`GoQuickJSJIT`), using a 32 MiB JIT memory limit
 - **[Paserati](https://github.com/nooga/paserati)**: Pure Go TypeScript/JavaScript runtime with a bytecode VM; benchmarks run with type checking disabled
 - **[MoeJS](https://github.com/MoeForge/moejs)**: Pure Go JavaScript runtime with a register bytecode interpreter
+- **[Ekuma](https://github.com/hajimehoshi/ekuma)**: Pure Go JavaScript engine with a register bytecode interpreter; an early-stage project with an unstable API
 - **[Node.js](https://nodejs.org/)**: V8 with JIT compilation enabled (`Node`), shown as a reference
 - **Node.js JITless**: The same Node.js executable with `--jitless` (`NodeJitless`), shown as a reference
 
@@ -18,36 +19,37 @@ Both benchmark modules use the following engine versions:
 
 | Engine | Version |
 | --- | --- |
-| Goja | `v0.0.0-20261118204651-8dfece3d1e1d` |
+| Goja | `v0.0.0-20261121162556-79d6ad37b976` |
 | ModerncQuickJS | `v0.27.0` |
 | QJS | `v0.0.6` |
-| GoQuickJS / GoQuickJSJIT | `v0.42.0` |
+| GoQuickJS / GoQuickJSJIT | `v0.43.0` |
 | Paserati | `v0.10.1` |
 | MoeJS | `v0.1.1` |
+| Ekuma | `v0.0.0-20261122110136-d62f469797c3` |
 | Node / NodeJitless | `v26.13.1` |
 
-Engines use their latest stable releases; Goja has no tagged releases and uses the latest Go module pseudo-version.
+Engines use their latest stable releases where available. Goja and Ekuma have no tagged releases and use their latest Go module pseudo-versions.
 
-Results collected on November 20, 2026 using the engine versions listed above and Go 1.27.3. The factorial benchmark averages five runs per engine; V8v7 reports one full suite run per engine. Results vary with system load and hardware.
+Results collected on November 22, 2026 using the engine versions listed above and Go 1.27.3. The factorial benchmark averages five runs per engine; V8v7 reports one full suite run per engine. Results vary with system load and hardware.
 
-Node reference results are presented separately and excluded from the Go-hosted engine rankings and relative times. Goja, GoQuickJS, Paserati, and MoeJS are pure-Go engines; ModerncQuickJS, QJS, and Node use different runtime architectures. Node provides a heavily optimized, JIT-enabled runtime reference, while NodeJitless provides an interpreter reference.
+Node reference results are presented separately and excluded from the Go-hosted engine rankings and relative times. Goja, GoQuickJS, Paserati, MoeJS, and Ekuma are pure-Go engines; ModerncQuickJS, QJS, and Node use different runtime architectures. Node provides a heavily optimized, JIT-enabled runtime reference, while NodeJitless provides an interpreter reference.
 
 The factorial workload discards its return values. An optimizing engine can eliminate redundant work, so these timings measure optimization as well as execution.
 
-GoQuickJSJIT, with a 32 MiB JIT memory limit, has the highest V8v7 score among the seven Go-hosted engine configurations in this run: 19082, compared with 7327 for the GoQuickJS interpreter and 5695 for MoeJS. Its factorial average is 61.119ms, compared with 153.012ms for MoeJS and 172.574ms for the GoQuickJS interpreter. Among the Go-hosted interpreter configurations, GoQuickJS has the highest V8v7 score, while MoeJS has the fastest factorial average. Enabling JIT gives GoQuickJS a 2.60x higher V8v7 score and runs factorial 2.82x faster than its interpreter. Compilation and warmup are included. These workloads measure different aspects of execution and do not establish a ranking for every application.
+GoQuickJSJIT, with a 32 MiB JIT memory limit, has the highest V8v7 score among the eight Go-hosted engine configurations in this run: 19886, compared with 7656 for the GoQuickJS interpreter, 5785 for MoeJS, and 5679 for Ekuma. Its factorial average is 65.839ms, compared with 143.746ms for MoeJS, 170.010ms for Ekuma, and 173.822ms for the GoQuickJS interpreter. Among the Go-hosted interpreter configurations, GoQuickJS has the highest V8v7 score, while MoeJS has the fastest factorial average. Enabling JIT gives GoQuickJS a 2.60x higher V8v7 score and runs factorial 2.64x faster than its interpreter. Compilation and warmup are included. These workloads measure different aspects of execution and do not establish a ranking for every application.
 
 ## Factorial Benchmark Results
 
-| Iteration | GOJA | ModerncQuickJS | QJS | GoQuickJS | GoQuickJSJIT | Paserati | MoeJS |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 696.683ms | 543.726ms | 623.641ms | 169.577ms | 64.297ms | 634.480ms | 143.102ms |
-| 2 | 707.390ms | 572.865ms | 646.872ms | 172.030ms | 65.169ms | 632.673ms | 145.965ms |
-| 3 | 714.161ms | 550.993ms | 606.293ms | 178.235ms | 61.946ms | 664.199ms | 138.094ms |
-| 4 | 697.074ms | 549.126ms | 617.827ms | 174.892ms | 62.290ms | 646.417ms | 140.718ms |
-| 5 | 707.963ms | 575.069ms | 607.545ms | 168.134ms | 51.894ms | 672.869ms | 197.184ms |
-| Average | 704.654ms | 558.356ms | 620.436ms | 172.574ms | **61.119ms** | 650.127ms | 153.012ms |
-| Total | 3.523s | 2.792s | 3.102s | 862.870ms | **305.598ms** | 3.251s | 765.064ms |
-| Relative Time (lower is better) | 11.53x | 9.14x | 10.15x | 2.82x | 1.00x | 10.64x | 2.50x |
+| Iteration | GOJA | ModerncQuickJS | QJS | GoQuickJS | GoQuickJSJIT | Paserati | MoeJS | Ekuma |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 713.425ms | 539.434ms | 623.574ms | 180.584ms | 62.303ms | 629.252ms | 140.473ms | 167.966ms |
+| 2 | 711.296ms | 532.907ms | 584.510ms | 169.875ms | 62.462ms | 625.508ms | 139.975ms | 172.326ms |
+| 3 | 703.569ms | 551.956ms | 578.707ms | 175.095ms | 64.171ms | 625.067ms | 146.300ms | 166.733ms |
+| 4 | 683.691ms | 543.867ms | 586.423ms | 173.450ms | 63.150ms | 621.797ms | 151.417ms | 174.701ms |
+| 5 | 722.558ms | 535.462ms | 584.820ms | 170.108ms | 77.109ms | 625.713ms | 140.567ms | 168.323ms |
+| Average | 706.908ms | 540.725ms | 591.607ms | 173.822ms | **65.839ms** | 625.467ms | 143.746ms | 170.010ms |
+| Total | 3.535s | 2.704s | 2.958s | 869.114ms | **329.197ms** | 3.127s | 718.734ms | 850.050ms |
+| Relative Time (lower is better) | 10.74x | 8.21x | 8.99x | 2.64x | 1.00x | 9.50x | 2.18x | 2.58x |
 
 *Benchmarks run on Apple M5 Max, 128 GiB RAM, macOS ARM64, Go 1.27.3.*
 
@@ -55,14 +57,14 @@ GoQuickJSJIT, with a 32 MiB JIT memory limit, has the highest V8v7 score among t
 
 | Iteration | Node | NodeJitless |
 | --- | --- | --- |
-| 1 | 26.729ms | 162.561ms |
-| 2 | 21.147ms | 160.964ms |
-| 3 | 21.404ms | 164.801ms |
-| 4 | 21.187ms | 172.311ms |
-| 5 | 18.081ms | 159.685ms |
-| Average | **21.710ms** | 164.064ms |
-| Total | **108.550ms** | 820.323ms |
-| Relative Time (lower is better) | 1.00x | 7.56x |
+| 1 | 26.575ms | 177.158ms |
+| 2 | 21.335ms | 164.880ms |
+| 3 | 22.010ms | 157.292ms |
+| 4 | 21.074ms | 165.372ms |
+| 5 | 22.069ms | 156.591ms |
+| Average | **22.613ms** | 164.259ms |
+| Total | **113.066ms** | 821.296ms |
+| Relative Time (lower is better) | 1.00x | 7.26x |
 
 *Node v26.13.1, using the same hardware and OS as above. Reference rankings compare only the two Node configurations.*
 
@@ -70,18 +72,18 @@ GoQuickJSJIT, with a 32 MiB JIT memory limit, has the highest V8v7 score among t
 
 Higher scores are better; lower duration is better.
 
-| Metric | GOJA | ModerncQuickJS | QJS | GoQuickJS | GoQuickJSJIT | Paserati | MoeJS |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Richards | 501 | 565 | 571 | 3319 | **15272** | 494 | 2835 |
-| DeltaBlue | 623 | 572 | 628 | 3587 | **13891** | 584 | 2992 |
-| Crypto | 337 | 578 | 445 | 5513 | **20870** | 649 | 2569 |
-| RayTrace | 777 | 1161 | 1007 | 9305 | **32634** | 1054 | 7495 |
-| EarleyBoyer | 1434 | 1416 | 1525 | 9707 | **12852** | 1877 | 10928 |
-| RegExp | 572 | 530 | 257 | 8027 | **10344** | 1135 | 5733 |
-| Splay | 2518 | 3056 | 2532 | 17056 | **23771** | 3403 | 15540 |
-| NavierStokes | 562 | 1544 | 726 | 10240 | **38507** | 1259 | 6961 |
-| Score (version 7) | 745 | 968 | 764 | 7327 | **19082** | 1076 | 5695 |
-| Duration (seconds) | 50.791s | 41.030s | 52.273s | 20.165s | **20.085s** | 37.900s | 21.222s |
+| Metric | GOJA | ModerncQuickJS | QJS | GoQuickJS | GoQuickJSJIT | Paserati | MoeJS | Ekuma |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Richards | 533 | 592 | 591 | 3280 | **15600** | 473 | 2951 | 2984 |
+| DeltaBlue | 656 | 596 | 651 | 3603 | **14255** | 592 | 3038 | 3537 |
+| Crypto | 350 | 598 | 471 | 5392 | **21881** | 662 | 2791 | 3866 |
+| RayTrace | 811 | 1242 | 1037 | 10708 | **36149** | 1089 | 7540 | 8206 |
+| EarleyBoyer | 1514 | 1547 | 1543 | 11375 | **15733** | 1956 | 10798 | 9125 |
+| RegExp | 588 | 550 | 266 | 8848 | **11103** | 1141 | 5983 | 4360 |
+| Splay | 2646 | 3199 | 2684 | 16282 | **20886** | 3427 | 15386 | 10594 |
+| NavierStokes | 584 | 1551 | 737 | 10558 | **38101** | 1300 | 6693 | 7671 |
+| Score (version 7) | 779 | 1013 | 791 | 7656 | **19886** | 1091 | 5785 | 5679 |
+| Duration (seconds) | 50.801s | 39.821s | 50.678s | 20.147s | **20.084s** | 37.538s | 21.282s | 20.262s |
 
 *Benchmarks run on Apple M5 Max, 128 GiB RAM, macOS ARM64, Go 1.27.3.*
 
@@ -89,16 +91,16 @@ Higher scores are better; lower duration is better.
 
 | Metric | Node | NodeJitless |
 | --- | --- | --- |
-| Richards | **84008** | 2958 |
-| DeltaBlue | **226368** | 3349 |
-| Crypto | **102046** | 2893 |
-| RayTrace | **229767** | 9415 |
-| EarleyBoyer | **189990** | 14047 |
-| RegExp | **26392** | 7182 |
-| Splay | **94073** | 16274 |
-| NavierStokes | **85033** | 4319 |
-| Score (version 7) | **107538** | 6099 |
-| Duration (seconds) | **20.049s** | 22.207s |
+| Richards | **82211** | 3032 |
+| DeltaBlue | **235869** | 3395 |
+| Crypto | **102134** | 2827 |
+| RayTrace | **228065** | 9462 |
+| EarleyBoyer | **190266** | 14003 |
+| RegExp | **26236** | 7509 |
+| Splay | **98669** | 16461 |
+| NavierStokes | **78504** | 4448 |
+| Score (version 7) | **107219** | 6177 |
+| Duration (seconds) | **20.050s** | 22.184s |
 
 *Node v26.13.1, using the same hardware and OS as above. Reference rankings compare only the two Node configurations.*
 
@@ -134,13 +136,14 @@ Memory usage cannot be compared fairly between these engines. Here's why:
 | GoQuickJSJIT | Go heap plus executable memory | Partly |
 | Paserati | Go heap and stack | Yes |
 | MoeJS | Go heap and stack | Yes |
+| Ekuma | Go heap and stack | Yes |
 | QJS | WASM linear memory | No |
 | ModerncQuickJS | mmap allocations | No |
 | Node / NodeJitless | V8 heap in a separate process | No |
 
-Goja, GoQuickJS, Paserati, and MoeJS use normal Go memory that shows up in `runtime.MemStats`. GoQuickJSJIT also allocates executable memory outside the Go heap. QJS and ModerncQuickJS use memory that Go cannot see, and Node runs in a separate process. This makes comparisons based on Go memory statistics misleading.
+Goja, GoQuickJS, Paserati, MoeJS, and Ekuma use normal Go memory that shows up in `runtime.MemStats`. GoQuickJSJIT also allocates executable memory outside the Go heap. QJS and ModerncQuickJS use memory that Go cannot see, and Node runs in a separate process. This makes comparisons based on Go memory statistics misleading.
 
-Only execution time is measured for the seven Go-hosted engine configurations and the two Node reference configurations.
+Only execution time is measured for the eight Go-hosted engine configurations and the two Node reference configurations.
 
 ## How to Run
 
@@ -200,6 +203,10 @@ Parses JavaScript/TypeScript and compiles it to bytecode for a register VM, impl
 Parses classic JavaScript scripts and compiles them to register bytecode in pure Go. Each benchmark creates a runtime before timing starts; parsing, compilation, and execution are included in the measured interval. Loaded V8 scripts share one global environment, with native `load` and `print` callbacks. V8v7 enables `MutableIntrinsics` because the suite replaces `Math.random` with a deterministic generator; factorial uses the default options. Memory is managed by Go's garbage collector.
 
 These results use the normal Go build settings, without MoeJS's optional plugin-workload PGO profile, matching the build approach used for the other engines.
+
+### Ekuma
+
+Parses JavaScript and compiles it to register bytecode in pure Go, without a JIT. Each benchmark initializes the VM's realm and built-in objects before timing starts; parsing, compilation, and execution are included in the measured interval. V8v7 scripts share one VM and global environment, with native `load` and `print` callbacks that propagate JavaScript exceptions. The optional `intl` package is not imported because these workloads do not use it. Memory is managed by Go's garbage collector.
 
 ### Node.js References
 
@@ -270,6 +277,7 @@ Provided as-is for testing purposes. Engine licenses:
 - GoQuickJS: MIT
 - Paserati: MIT
 - MoeJS: Apache-2.0
+- Ekuma: 0BSD
 - QJS: MIT
 - ModerncQuickJS: BSD-3-Clause
 - Node.js: MIT, with separately licensed bundled dependencies

@@ -31,6 +31,38 @@ func TestMoeJSRun(t *testing.T) {
 	testScriptEngine(t, &MoeJS{})
 }
 
+func TestEkumaRun(t *testing.T) {
+	testScriptEngine(t, &Ekuma{})
+}
+
+func TestEkumaHostConversions(t *testing.T) {
+	t.Chdir(t.TempDir())
+	if err := os.WriteFile("entry.js", []byte(`
+		var marker = {};
+		var throws = {toString: function() { throw marker; }};
+		try { print(throws); throw new Error("print did not throw"); }
+		catch (e) { if (e !== marker) throw e; }
+		try { load(throws); throw new Error("load did not throw"); }
+		catch (e) { if (e !== marker) throw e; }
+		print({toString: function() { return "object"; }}, null, undefined);
+	`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	engine := &Ekuma{}
+	if err := engine.Init(); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { engine.Close() })
+	output, err := engine.Run("entry.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := [][]string{{"object", " ", "null", " ", "undefined"}}
+	if !reflect.DeepEqual(output, want) {
+		t.Fatalf("output = %v, want %v", output, want)
+	}
+}
+
 func TestNodeRun(t *testing.T) {
 	if _, err := exec.LookPath("node"); err != nil {
 		t.Skip("Node.js is not installed")
