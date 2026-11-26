@@ -4,10 +4,10 @@ go 1.27.1
 
 require (
 	github.com/MoeForge/moejs v0.1.1
-	github.com/dop251/goja v0.0.0-20261121162556-79d6ad37b976
+	github.com/dop251/goja v0.0.0-20261125210501-5e92a7e24d0c
 	github.com/fastschema/qjs v0.0.6
-	github.com/go-quickjs/go-quickjs v0.43.0
-	github.com/hajimehoshi/ekuma v0.0.0-20261122110136-d62f469797c3
+	github.com/go-quickjs/go-quickjs v0.45.1
+	github.com/hajimehoshi/ekuma v0.0.0-20261125190603-3adcefe737df
 	github.com/jedib0t/go-pretty/v6 v6.6.8
 	github.com/nooga/paserati v0.10.1
 	modernc.org/quickjs v0.27.0
